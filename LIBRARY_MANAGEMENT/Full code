@@ -1,1 +1,111 @@
 
+class Library:
+    book_list = []
+
+    @classmethod
+    def entry_book(cls, book):
+        
+        cls.book_list.append(book)
+        print(f"Book '{book.get_title()}' is added.")
+
+class Book:
+    def __init__(self, book_id, title, author, availability):
+
+        self.__book_id = book_id
+        self.__title = title
+        self.__author = author
+        self.__availability = availability
+
+        Library.entry_book(self)
+
+    def borrow_book(self):
+
+        if self.__availability:
+
+            self.__availability = False
+
+            print(f"Book '{self.__title}' is borrowed.")
+
+        else:
+            print(f"Book '{self.__title}' is not available for borrowing.")
+
+    def return_book(self):
+
+        if not self.__availability:
+
+            self.__availability = True
+            print(f"Book '{self.__title}' is returned.")
+
+        else:
+            print(f"Book '{self.__title}' was not borrowed.")
+
+    def view_book_info(self):
+        return f"ID: {self.__book_id}, Title: {self.__title}, Author: {self.__author}, Available: {self.__availability}"
+
+    def get_id(self):
+        return self.__book_id
+
+    def get_title(self):
+        return self.__title 
+
+def menu():
+    
+    print("Library Management System")
+    print("1. Add Book")
+    print("2. Borrow Book")
+    print("3. Return Book")
+    print("4. View Book Info")
+    print("5. Exit")
+
+    while True:
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+
+            book_id = input("Enter Book ID: ")
+            title = input("Enter Book Title: ")
+            author = input("Enter Book Author: ")
+            book = Book(book_id, title, author, True)
+
+        elif choice == '2':
+
+            book_id = input("Enter Book ID to borrow: ")
+
+            for book in Library.book_list:
+
+                if book.get_id() == book_id:
+
+                    book.borrow_book()
+                    break
+            else:
+                print("Book not found.")
+
+        elif choice == '3':
+            book_id = input("Enter Book ID to return: ")
+
+            for book in Library.book_list:
+
+                if book.get_id() == book_id:
+
+                    book.return_book()
+                    break
+            else:
+                print("Book not found.")
+
+        elif choice == '4':
+
+            for book in Library.book_list:
+
+                print(book.view_book_info())
+
+        elif choice == '5':
+
+            print("Exiting the system.")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+
+menu()
